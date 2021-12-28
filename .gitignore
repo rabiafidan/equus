@@ -1,0 +1,5 @@
+.snakemake/
+1.err
+1.txt
+data/
+logs/
