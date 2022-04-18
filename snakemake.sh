@@ -11,7 +11,7 @@ echo "NUMBER OF CORES $SLURM_NTASKS"
 
 source ~/.bashrc
 
-snakemake --latency-wait 300 --rerun-incomplete --cluster "sbatch --mem {resources.mem_mb} --ntasks {threads} -p chimp --job-name snakemake --error {params.err} --output {params.out}" --jobs 50 --keep-going --use-conda
+snakemake --latency-wait 300 --rerun-incomplete --cluster "sbatch --mem {resources.mem_mb} --ntasks {threads} -p macaque2 --job-name snakemake --error {params.err} --output {params.out}" --jobs 50 --keep-going --use-conda
 
 
 

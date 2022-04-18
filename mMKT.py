@@ -3,62 +3,18 @@ import os
 import pandas as pd
 os.chdir("/mnt/NEOGENE1/projects/donkey_2020/modified_MKT")
 
-#read individual based fasta files and write back CDS-based fasta files
+#######################################   DIVERGENCE   ############################################################
+
+#read individual pop based fasta files and write back CDS-based fasta files
 #Asia
-#Aw2_records = list(SeqIO.parse("data/cufflinks_fastas/Aw2_ref.fa", "fasta"))
-#Aw3_records = list(SeqIO.parse("data/cufflinks_fastas/Aw3_ref.fa", "fasta"))
-#BayanNur_records = list(SeqIO.parse("data/cufflinks_fastas/BayanNur_ref.fa", "fasta"))
-#Kiang_records = list(SeqIO.parse("data/cufflinks_fastas/kiang_ref.fa", "fasta"))
-#Kia_records = list(SeqIO.parse("data/cufflinks_fastas/Kia2_ref.fa", "fasta"))
-#hem_records = list(SeqIO.parse("data/cufflinks_fastas/hemionus_ref.fa", "fasta"))
-#
-#
-#for i,_ in enumerate(Aw2_records):
-#    with open(f"data/Asia_homalt_fasta/{Aw2_records[i].description.replace(' ','_')}","w") as out:
-#        out.write(f">Aw2 {Aw2_records[i].description}\n")
-#        out.write(str(Aw2_records[i].seq)+"\n")
-#        out.write(f">Aw3 {Aw2_records[i].description}\n")
-#        out.write(str(Aw3_records[i].seq)+"\n")
-#        out.write(f">BayanNur {Aw2_records[i].description}\n")
-#        out.write(str(BayanNur_records[i].seq)+"\n")
-#        out.write(f">Kiang {Aw2_records[i].description}\n")
-#        out.write(str(Kiang_records[i].seq)+"\n")
-#        out.write(f">Kia {Aw2_records[i].description}\n")
-#        out.write(str(Kia_records[i].seq)+"\n")
-#        out.write(f">hemionus {Aw2_records[i].description}\n")
-#        out.write(str(hem_records[i].seq))
 
 Asia_records = list(SeqIO.parse("/mnt/NEOGENE1/projects/donkey_2020/paml/withgff/asian_alts.vcf.fa.out", "fasta"))
 for i,_ in enumerate(Asia_records):
     with open(f"data/Asia_single_fasta/{Asia_records[i].description.replace(' ','_')}","w") as out:
         out.write(f">Asia {Asia_records[i].description}\n")
         out.write(str(Asia_records[i].seq)+"\n")
-#
+
 ##Africa
-#Chby1_records = list(SeqIO.parse("data/cufflinks_fastas/Ch-by1_ref.fa", "fasta"))
-#Eg1_records = list(SeqIO.parse("data/cufflinks_fastas/Eg-1_ref.fa", "fasta"))
-#Ir5_records = list(SeqIO.parse("data/cufflinks_fastas/Ir-5_ref.fa", "fasta"))
-#Ke14_records = list(SeqIO.parse("data/cufflinks_fastas/Ke-14_ref.fa", "fasta"))
-#Ky5_records = list(SeqIO.parse("data/cufflinks_fastas/Ky-5_ref.fa", "fasta"))
-#Sp5_records = list(SeqIO.parse("data/cufflinks_fastas/Sp-5_ref.fa", "fasta"))
-#somalicus_records = list(SeqIO.parse("data/cufflinks_fastas/somalicus_ref.fa", "fasta"))
-#    
-#for i,_ in enumerate(Chby1_records):
-#    with open(f"data/Africa_homalt_fasta/{Chby1_records[i].description.replace(' ','_')}","w") as out:
-#        out.write(f">Chby1 {Chby1_records[i].description}\n")
-#        out.write(str(Chby1_records[i].seq)+"\n")
-#        out.write(f">Eg1 {Chby1_records[i].description}\n")
-#        out.write(str(Eg1_records[i].seq)+"\n")
-#        out.write(f">Ir5 {Chby1_records[i].description}\n")
-#        out.write(str(Ir5_records[i].seq)+"\n")
-#        out.write(f">Ke14 {Chby1_records[i].description}\n")
-#        out.write(str(Ke14_records[i].seq)+"\n")
-#        out.write(f">Ky5 {Chby1_records[i].description}\n")
-#        out.write(str(Ky5_records[i].seq)+"\n")
-#        out.write(f">Sp5 {Chby1_records[i].description}\n")
-#        out.write(str(Sp5_records[i].seq)+"\n")
-#        out.write(f">somalicus {Chby1_records[i].description}\n")
-#        out.write(str(somalicus_records[i].seq))
 
 Africa_records = list(SeqIO.parse("/mnt/NEOGENE1/projects/donkey_2020/paml/withgff/african_alts.vcf.fa.out", "fasta"))
 for i,_ in enumerate(Africa_records):
@@ -68,11 +24,6 @@ for i,_ in enumerate(Africa_records):
 
 
 #Anatolia
-#Anatolia_records = list(SeqIO.parse("data/cufflinks_fastas/cdh008_ref.fa", "fasta"))
-#for i,_ in enumerate(Anatolia_records):
-#    with open(f"data/Anatolia_homalt_fasta/{Anatolia_records[i].description.replace(' ','_')}","w") as out:
-#        out.write(f">cdh008 {Anatolia_records[i].description}\n")
-#        out.write(str(Anatolia_records[i].seq))
     
 Anatolia_records = list(SeqIO.parse("/mnt/NEOGENE1/projects/donkey_2020/paml/withgff/cdh008_alts.vcf.fa.out", "fasta"))
 for i,_ in enumerate(Anatolia_records):
@@ -182,47 +133,18 @@ counts_df=pd.DataFrame(dict(CDS=valid_transcript_list,Af_As_syn=Af_As_syn_list,A
                                                 As_An_syn=As_An_syn_list,As_An_ns=As_An_ns_list,len=lengths))
 
 
+
+################################## POLYMORPHISM ##############################################################
+
 #for polymorphism info, we add the second set of consensus fastas which contain alternative alleles for heterozgous positions
-#Asia
-#Aw2_records_alt = list(SeqIO.parse("data/cufflinks_fastas/Aw2_alt.fa", "fasta"))
-#Aw3_records_alt = list(SeqIO.parse("data/cufflinks_fastas/Aw3_alt.fa", "fasta"))
-#BayanNur_records_alt = list(SeqIO.parse("data/cufflinks_fastas/BayanNur_alt.fa", "fasta"))
-#Kiang_records_alt = list(SeqIO.parse("data/cufflinks_fastas/kiang_alt.fa", "fasta"))
-#Kia_records_alt = list(SeqIO.parse("data/cufflinks_fastas/Kia2_alt.fa", "fasta"))
-#hem_records_alt = list(SeqIO.parse("data/cufflinks_fastas/hemionus_alt.fa", "fasta"))
+#we write them back as CDS based, together with the ref.
 
 Asian_poly = list(SeqIO.parse("data/cufflinks_pop_fastas/Asian_biallelic_polymorphic.fa", "fasta"))
 African_poly = list(SeqIO.parse("data/cufflinks_pop_fastas/African_biallelic_polymorphic.fa", "fasta"))
 Anatolian_poly = list(SeqIO.parse("data/cufflinks_pop_fastas/Anatolian_biallelic_polymorphic.fa", "fasta"))
 ref = list(SeqIO.parse("/mnt/NEOGENE1/projects/donkey_2020/paml/withgff/horse.fa.out", "fasta"))
 
-#for i,r in enumerate(Aw2_records):
-#    with open(f"data/Asia_polymorphic_fasta/{r.description.replace(' ','_')}","w") as out:
-#        out.write(f">Aw2 {Aw2_records[i].description}\n")
-#        out.write(str(Aw2_records[i].seq)+"\n")
-#        out.write(f">Aw2_alt {Aw2_records[i].description}\n")
-#        out.write(str(Aw2_records_alt[i].seq)+"\n")
-#        out.write(f">Aw3 {Aw2_records[i].description}\n")
-#        out.write(str(Aw3_records[i].seq)+"\n")
-#        out.write(f">Aw3_alt {Aw2_records[i].description}\n")
-#        out.write(str(Aw3_records_alt[i].seq)+"\n")
-#        out.write(f">BayanNur {Aw2_records[i].description}\n")
-#        out.write(str(BayanNur_records[i].seq)+"\n")
-#        out.write(f">BayanNur_alt {Aw2_records[i].description}\n")
-#        out.write(str(BayanNur_records_alt[i].seq)+"\n")
-#        out.write(f">Kiang {Aw2_records[i].description}\n")
-#        out.write(str(Kiang_records[i].seq)+"\n")
-#        out.write(f">Kiang_alt {Aw2_records[i].description}\n")
-#        out.write(str(Kiang_records_alt[i].seq)+"\n")
-#        out.write(f">Kia {Aw2_records[i].description}\n")
-#        out.write(str(Kia_records[i].seq)+"\n")
-#        out.write(f">Kia_alt {Aw2_records[i].description}\n")
-#        out.write(str(Kia_records_alt[i].seq)+"\n")
-#        out.write(f">hemionus {Aw2_records[i].description}\n")
-#        out.write(str(hem_records[i].seq))
-#        out.write(f">hemionus_alt {Aw2_records[i].description}\n")
-#        out.write(str(hem_records_alt[i].seq))
-
+#Asia
 for i,_ in enumerate(Asian_poly):
     with open(f"data/Asia_single_fasta/poly_{Asian_poly[i].description.replace(' ','_')}","w") as out:
         out.write(f">Asia_poly {Asian_poly[i].description}\n")
@@ -232,45 +154,6 @@ for i,_ in enumerate(Asian_poly):
 
 
 #Africa
-#Chby1_records_alt = list(SeqIO.parse("data/cufflinks_fastas/Ch-by1_alt.fa", "fasta"))
-#Eg1_records_alt = list(SeqIO.parse("data/cufflinks_fastas/Eg-1_alt.fa", "fasta"))
-#Ir5_records_alt = list(SeqIO.parse("data/cufflinks_fastas/Ir-5_alt.fa", "fasta"))
-#Ke14_records_alt = list(SeqIO.parse("data/cufflinks_fastas/Ke-14_alt.fa", "fasta"))
-#Ky5_records_alt = list(SeqIO.parse("data/cufflinks_fastas/Ky-5_alt.fa", "fasta"))
-#Sp5_records_alt = list(SeqIO.parse("data/cufflinks_fastas/Sp-5_alt.fa", "fasta"))
-#somalicus_records_alt = list(SeqIO.parse("data/cufflinks_fastas/somalicus_alt.fa", "fasta"))
-#    
-#for i,_ in enumerate(Chby1_records):
-#    with open(f"data/Africa_polymorphic_fasta/{Chby1_records[i].description.replace(' ','_')}","w") as out:
-#        out.write(f">Chby1 {Chby1_records[i].description}\n")
-#        out.write(str(Chby1_records[i].seq)+"\n")
-#        out.write(f">Chby1_alt {Chby1_records[i].description}\n")
-#        out.write(str(Chby1_records_alt[i].seq)+"\n")
-#        out.write(f">Eg1 {Chby1_records[i].description}\n")
-#        out.write(str(Eg1_records[i].seq)+"\n")
-#        out.write(f">Eg1_alt {Chby1_records[i].description}\n")
-#        out.write(str(Eg1_records_alt[i].seq)+"\n")
-#        out.write(f">Ir5 {Chby1_records[i].description}\n")
-#        out.write(str(Ir5_records[i].seq)+"\n")
-#        out.write(f">Ir5_alt {Chby1_records[i].description}\n")
-#        out.write(str(Ir5_records_alt[i].seq)+"\n")
-#        out.write(f">Ke14 {Chby1_records[i].description}\n")
-#        out.write(str(Ke14_records[i].seq)+"\n")
-#        out.write(f">Ke14_alt {Chby1_records[i].description}\n")
-#        out.write(str(Ke14_records_alt[i].seq)+"\n")
-#        out.write(f">Ky5 {Chby1_records[i].description}\n")
-#        out.write(str(Ky5_records[i].seq)+"\n")
-#        out.write(f">Ky5_alt {Chby1_records[i].description}\n")
-#        out.write(str(Ky5_records_alt[i].seq)+"\n")
-#        out.write(f">Sp5 {Chby1_records[i].description}\n")
-#        out.write(str(Sp5_records[i].seq)+"\n")
-#        out.write(f">Sp5_alt {Chby1_records[i].description}\n")
-#        out.write(str(Sp5_records_alt[i].seq)+"\n")
-#        out.write(f">somalicus {Chby1_records[i].description}\n")
-#        out.write(str(somalicus_records[i].seq))
-#        out.write(f">somalicus_alt {Chby1_records[i].description}\n")
-#        out.write(str(somalicus_records_alt[i].seq))
-#
 
 for i,_ in enumerate(African_poly):
     with open(f"data/Africa_single_fasta/poly_{African_poly[i].description.replace(' ','_')}","w") as out:
