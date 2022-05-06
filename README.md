@@ -1,4 +1,4 @@
-# Anatolian Wild Ass Specific adaptations using 3 pairwise MKT
+# Anatolian Wild Ass Specific adaptations
 This repo contains the pairwise MKT analysis described in Özkan et al. 2022
 
 - Snakefile: obtaining consensus fasta sequences from the De novo variant call set.
