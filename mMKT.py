@@ -8,7 +8,7 @@ os.chdir("/mnt/NEOGENE1/projects/donkey_2020/modified_MKT")
 #read individual pop based fasta files and write back CDS-based fasta files
 #Asia
 
-Asia_records = list(SeqIO.parse("/mnt/NEOGENE1/projects/donkey_2020/paml/withgff/asian_alts.vcf.fa.out", "fasta"))
+Asia_records = list(SeqIO.parse("/mnt/NEOGENE1/projects/donkey_2020/paml/withgff/masked/asian_alts_notg_masked.vcf.fa.out", "fasta"))
 for i,_ in enumerate(Asia_records):
     with open(f"data/Asia_single_fasta/{Asia_records[i].description.replace(' ','_')}","w") as out:
         out.write(f">Asia {Asia_records[i].description}\n")
@@ -16,7 +16,7 @@ for i,_ in enumerate(Asia_records):
 
 ##Africa
 
-Africa_records = list(SeqIO.parse("/mnt/NEOGENE1/projects/donkey_2020/paml/withgff/african_alts.vcf.fa.out", "fasta"))
+Africa_records = list(SeqIO.parse("/mnt/NEOGENE1/projects/donkey_2020/paml/withgff/masked/african_alts_notg_masked.vcf.fa.out", "fasta"))
 for i,_ in enumerate(Africa_records):
     with open(f"data/Africa_single_fasta/{Africa_records[i].description.replace(' ','_')}","w") as out:
         out.write(f">Africa {Africa_records[i].description}\n")
@@ -25,7 +25,7 @@ for i,_ in enumerate(Africa_records):
 
 #Anatolia
     
-Anatolia_records = list(SeqIO.parse("/mnt/NEOGENE1/projects/donkey_2020/paml/withgff/cdh008_alts.vcf.fa.out", "fasta"))
+Anatolia_records = list(SeqIO.parse("/mnt/NEOGENE1/projects/donkey_2020/paml/withgff/masked/cdh008_alts_notg_masked.vcf.fa.out", "fasta"))
 for i,_ in enumerate(Anatolia_records):
     with open(f"data/Anatolia_single_fasta/{Anatolia_records[i].description.replace(' ','_')}","w") as out:
         out.write(f">Anatolia {Anatolia_records[i].description}\n")
@@ -149,7 +149,9 @@ for i,_ in enumerate(Asian_poly):
     with open(f"data/Asia_single_fasta/poly_{Asian_poly[i].description.replace(' ','_')}","w") as out:
         out.write(f">Asia_poly {Asian_poly[i].description}\n")
         out.write(str(Asian_poly[i].seq)+"\n")
-        out.write(f">ref {Asian_poly[i].description}\n")
+        out.write(f">ref {Asia_records[i].description}\n")
+        out.write(str(Asia_records[i].seq)+"\n")
+        out.write(f">horse {ref[i].description}\n")
         out.write(str(ref[i].seq))
 
 
@@ -159,8 +161,11 @@ for i,_ in enumerate(African_poly):
     with open(f"data/Africa_single_fasta/poly_{African_poly[i].description.replace(' ','_')}","w") as out:
         out.write(f">Africa_poly {African_poly[i].description}\n")
         out.write(str(African_poly[i].seq)+"\n")
-        out.write(f">ref {African_poly[i].description}\n")
+        out.write(f">ref {Africa_records[i].description}\n")
+        out.write(str(Africa_records[i].seq)+"\n")
+        out.write(f">horse {ref[i].description}\n")
         out.write(str(ref[i].seq))
+
 
 
 
@@ -186,12 +191,16 @@ def pols(pop_name,transcript_ls):
         ns=0
         records=list(SeqIO.parse(f"data/{pop_name}_single_fasta/poly_{gene}", "fasta"))
         seq_ls=[str(a.seq) for a in records]
-        if len(set(seq_ls))!=1: #if all sequences are identical, counts will remain 0
+        for index, (char1, char2) in enumerate(zip(seq_ls[2],seq_ls[1])):
+            if char1 != char2:
+                # Update string3 at the differing position
+                seq_ls[0] = seq_ls[0][:index] + char2 + seq_ls[0][index + 1:]
+        if len(set(seq_ls[:2]))!=1: #if all sequences are identical, counts will remain 0
             for codon_idx in range(0,len(seq_ls[0]),3):
-                codon_ls=[a[codon_idx:codon_idx+3] for a in seq_ls]
+                codon_ls=[a[codon_idx:codon_idx+3] for a in seq_ls[:2]]
                 if len(set(codon_ls))>2: #there were none in our dataset
                     print("more than 2 codons!")
-                if "N" in codon_ls[0]:
+                if "N" in codon_ls[0] or "N" in codon_ls[1]:
                     pass
                 else:
                     if len(set(codon_ls))>1:
@@ -212,5 +221,5 @@ counts_df['Afr_syn_pol']=Afr_syn_pol
 counts_df['Afr_ns_pol']=Afr_ns_pol
 counts2_df=counts_df[["Af_As_syn","Af_As_ns","Af_An_syn","Af_An_ns","As_An_syn","As_An_ns",'As_syn_pol','As_ns_pol','Afr_syn_pol','Afr_ns_pol',"len","CDS"]]
 
-counts2_df.to_csv("counts_new2.tsv",sep="\t",index=False)
+counts2_df.to_csv("counts_reviewed.tsv",sep="\t",index=False)
 
